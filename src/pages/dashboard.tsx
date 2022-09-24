@@ -2,10 +2,10 @@ import React from 'react';
 import { useWeb3 } from '../contexts/web3.context';
 
 const Dashboard = () => {
-  const { provider } = useWeb3();
+  const { web3 } = useWeb3();
   return (
     <>
-      {console.log('provider', provider)}
+      {console.log('provider', web3)}
       dashboard
     </>
   );
