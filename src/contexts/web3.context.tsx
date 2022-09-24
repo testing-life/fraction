@@ -6,6 +6,7 @@ import { RequestUrl } from '../consts/requestUrls';
 export type Web3Context = {
   web3: any;
   daiTransfers: any;
+  error: string;
 };
 
 interface IWeb3Provider {
@@ -45,7 +46,13 @@ const Web3Provider: FC<IWeb3Provider> = props => {
         }
       };
       getDaiTransfers();
+      web3.ws.on('block', res => {
+        getDaiTransfers();
+      });
     }
+    return () => {
+      web3?.ws.removeAllListeners();
+    };
   }, [web3]);
 
   const fetchDaiTransfers = async (): Promise<DaiTransfers> => {
@@ -83,6 +90,7 @@ const Web3Provider: FC<IWeb3Provider> = props => {
       value={{
         web3,
         daiTransfers,
+        error,
       }}
       {...props}
     />
