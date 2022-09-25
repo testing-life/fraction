@@ -1,0 +1,18 @@
+@tailwind components;
+@layer components {
+  .tx {
+    @apply flex gap-3 flex-1;
+  }
+
+  .isForLg {
+    @apply hidden sm:hidden md:flex hover:cursor-pointer;
+  }
+
+  .isForSm {
+    @apply sm:flex md:hidden;
+  }
+
+  .btn {
+    @apply bg-orange-200 p-2 rounded-md hover:bg-orange-800 hover:text-slate-200;
+  }
+}

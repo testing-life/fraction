@@ -1,14 +1,6 @@
 @tailwind components;
 @layer components {
-  .txList {
-    /* @apply text-left bg-blue-400; */
-  }
-
-  .isForLg {
-    @apply hidden sm:hidden md:block;
-  }
-
-  .isForSm {
-    @apply sm:block md:hidden;
+  .txList__item {
+    @apply flex flex-col sm:flex-col md:flex-row md:gap-4 justify-around p-2 even:bg-slate-200;
   }
 }
