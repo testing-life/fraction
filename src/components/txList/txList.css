@@ -1,0 +1,14 @@
+@tailwind components;
+@layer components {
+  .txList {
+    /* @apply text-left bg-blue-400; */
+  }
+
+  .isForLg {
+    @apply hidden sm:hidden md:block;
+  }
+
+  .isForSm {
+    @apply sm:block md:hidden;
+  }
+}

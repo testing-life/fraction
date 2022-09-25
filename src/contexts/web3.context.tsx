@@ -2,6 +2,7 @@ import React, { FC, createContext, useContext, useState, ReactNode, useEffect } 
 import { Network, Alchemy } from 'alchemy-sdk';
 import { TokenAddresses } from '../consts/addresses';
 import { RequestUrl } from '../consts/requestUrls';
+import { mapDaiData, MappedDaiTransfer } from '../utils/mapping';
 
 export type Web3Context = {
   web3: any;
@@ -23,7 +24,7 @@ const Web3Context = createContext<Web3Context>(null!);
 
 const Web3Provider: FC<IWeb3Provider> = props => {
   const [web3, setWeb3] = useState<Alchemy>();
-  const [daiTransfers, setDaiTransfers] = useState([]);
+  const [daiTransfers, setDaiTransfers] = useState<MappedDaiTransfer[]>([]);
   const [error, setError] = useState('');
 
   const settings = {
@@ -42,7 +43,8 @@ const Web3Provider: FC<IWeb3Provider> = props => {
       const getDaiTransfers = async () => {
         const res = await fetchDaiTransfers();
         if (res) {
-          setDaiTransfers(res.result.transfers);
+          const mappedResult = mapDaiData(res.result.transfers);
+          setDaiTransfers(mappedResult);
         }
       };
       getDaiTransfers();

@@ -1,4 +1,5 @@
 import React from 'react';
+import TxList from '../components/txList/txList';
 import { useWeb3 } from '../contexts/web3.context';
 
 const Dashboard = () => {
@@ -6,7 +7,7 @@ const Dashboard = () => {
   return (
     <>
       {console.log('provider', web3, daiTransfers)}
-      dashboard
+      <TxList txs={daiTransfers} />
     </>
   );
 };

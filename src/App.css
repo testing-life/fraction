@@ -1,6 +1,6 @@
 @tailwind components;
 @layer components {
   .App {
-    @apply text-left bg-blue-400;
+    /* @apply text-left bg-blue-400; */
   }
 }
