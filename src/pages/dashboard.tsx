@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import TextInput from '../components/textInput/textInput';
 import TxList from '../components/txList/txList';
 import { useWeb3 } from '../contexts/web3.context';
+import './dashboard.css';
 
 const Dashboard = () => {
   const { daiTransfers, filterBy } = useWeb3();
@@ -9,7 +11,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     filterBy({ senderAddress: from, receiverAddress: to });
-  }, [to, from, filterBy]);
+  }, [to, from]);
 
   const senderFilterHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setFrom(e.target.value);
@@ -21,8 +23,10 @@ const Dashboard = () => {
 
   return (
     <>
-      <input type="text" placeholder="Sender" onChange={senderFilterHandler} />
-      <input type="text" placeholder="Receiver" onChange={receiverFilterHandler} />
+      <div className="inputWrapper">
+        <TextInput id="sender-filter" label="Filter by" placeholder="Sender" onChange={senderFilterHandler} />
+        <TextInput id="receiver-filter" label="Filter by" placeholder="Receiver" onChange={receiverFilterHandler} />
+      </div>
       <TxList txs={daiTransfers} />
     </>
   );
