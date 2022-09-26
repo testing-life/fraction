@@ -9,25 +9,12 @@ interface Props {
 }
 
 const TextInput: FC<Props> = ({ onChange, placeholder, label, id }) => {
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-  useEffect(() => {
-    console.log('inputRef.current', inputRef.current);
-  }, []);
-
   return (
     <div className="textInput">
       <label className="textInput__label" htmlFor={id}>
         {label}
       </label>
-      <input
-        ref={inputRef}
-        className="textInput__input"
-        type="text"
-        id={id}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
+      <input className="textInput__input" type="text" id={id} placeholder={placeholder} onChange={onChange} />
     </div>
   );
 };
