@@ -19,6 +19,9 @@ interface DaiTransfers {
   result: {
     transfers: [];
   };
+  error: {
+    message: string;
+  };
 }
 
 const Web3Context = createContext<IWeb3Context>(null!);
@@ -97,8 +100,15 @@ const Web3Provider: FC<IWeb3Provider> = props => {
   }, [filterTo, filterFrom]);
 
   const getDaiTransfers = async (options = fetchOptions()) => {
+    if (error) {
+      setError('');
+    }
     const res = await fetchDaiTransfers(options);
-    if (res) {
+    if (res.error) {
+      setError(res.error.message);
+    }
+
+    if (res.result) {
       const mappedResult = mapDaiData(res.result.transfers);
       setDaiTransfers(mappedResult);
     }

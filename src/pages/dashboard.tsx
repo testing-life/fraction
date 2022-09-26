@@ -5,7 +5,7 @@ import { useWeb3 } from '../contexts/web3.context';
 import './dashboard.css';
 
 const Dashboard = () => {
-  const { daiTransfers, filterBy } = useWeb3();
+  const { daiTransfers, filterBy, error } = useWeb3();
   const [to, setTo] = useState('');
   const [from, setFrom] = useState('');
 
@@ -27,6 +27,7 @@ const Dashboard = () => {
         <TextInput id="sender-filter" label="Filter by" placeholder="Sender" onChange={senderFilterHandler} />
         <TextInput id="receiver-filter" label="Filter by" placeholder="Receiver" onChange={receiverFilterHandler} />
       </div>
+      {error ? <p className="error">{error}</p> : null}
       <TxList txs={daiTransfers} />
     </>
   );

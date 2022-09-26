@@ -3,4 +3,7 @@
   .inputWrapper {
     @apply flex bg-slate-400 p-2 mb-8 gap-8;
   }
+  .error {
+    @apply text-rose-500 p-2;
+  }
 }
