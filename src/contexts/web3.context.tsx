@@ -1,10 +1,10 @@
 import React, { FC, createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Network, Alchemy } from 'alchemy-sdk';
-import { TokenAddresses } from '../consts/addresses';
 import { RequestUrl } from '../consts/requestUrls';
 import { mapDaiData, MappedDaiTransfer } from '../utils/mapping';
+import { buildParams } from '../utils/params';
 
-export type Web3Context = {
+export type IWeb3Context = {
   web3: any;
   daiTransfers: any;
   error: string;
@@ -21,7 +21,7 @@ interface DaiTransfers {
   };
 }
 
-const Web3Context = createContext<Web3Context>(null!);
+const Web3Context = createContext<IWeb3Context>(null!);
 
 const Web3Provider: FC<IWeb3Provider> = props => {
   const [web3, setWeb3] = useState<Alchemy>();
@@ -80,19 +80,10 @@ const Web3Provider: FC<IWeb3Provider> = props => {
 
   useEffect(() => {
     web3?.ws.removeAllListeners();
-    let filteredParams = null;
-    if (filterTo) {
-      filteredParams = { ...fetchBody.params[0], toAddress: filterTo };
-    }
-    if (filterFrom) {
-      filteredParams = { ...fetchBody.params[0], fromAddress: filterFrom };
-    }
-    if (filterFrom && filterTo) {
-      filteredParams = { ...fetchBody.params[0], fromAddress: filterFrom, toAddress: filterTo };
-    }
+    let filteredParams = buildParams(filterTo, filterFrom, fetchBody.params[0]);
     if (filteredParams) {
       const filteredBody = { ...fetchBody, params: [filteredParams] };
-      const options = fetchOptions(filteredBody);
+      const options = fetchOptions(filteredBody as any);
       getDaiTransfers(options);
       web3?.ws.on('block', () => {
         getDaiTransfers(options);
