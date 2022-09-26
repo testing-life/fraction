@@ -68,13 +68,6 @@ const Web3Provider: FC<IWeb3Provider> = props => {
 
   useEffect(() => {
     if (web3 && !daiTransfers.length) {
-      const getDaiTransfers = async () => {
-        const res = await fetchDaiTransfers(fetchOptions());
-        if (res) {
-          const mappedResult = mapDaiData(res.result.transfers);
-          setDaiTransfers(mappedResult);
-        }
-      };
       getDaiTransfers();
       web3.ws.on('block', () => {
         getDaiTransfers();
@@ -87,27 +80,34 @@ const Web3Provider: FC<IWeb3Provider> = props => {
 
   useEffect(() => {
     web3?.ws.removeAllListeners();
+    let filteredParams = null;
     if (filterTo) {
-      const filteredParams = { ...fetchBody.params[0], toAddress: filterTo };
-      const filteredBody = { ...fetchBody, params: [filteredParams] };
-      console.log('fetchOptions() to', fetchOptions(filteredBody));
-      fetchDaiTransfers(fetchOptions(filteredBody));
+      filteredParams = { ...fetchBody.params[0], toAddress: filterTo };
     }
     if (filterFrom) {
-      const filteredParams = { ...fetchBody.params[0], fromAddress: filterFrom };
-      const filteredBody = { ...fetchBody, params: [filteredParams] };
-      console.log('fetchOptions() from', fetchOptions(filteredBody));
-      fetchDaiTransfers(fetchOptions(filteredBody));
+      filteredParams = { ...fetchBody.params[0], fromAddress: filterFrom };
     }
     if (filterFrom && filterTo) {
-      const filteredParams = { ...fetchBody.params[0], fromAddress: filterFrom, toAddress: filterTo };
+      filteredParams = { ...fetchBody.params[0], fromAddress: filterFrom, toAddress: filterTo };
+    }
+    if (filteredParams) {
       const filteredBody = { ...fetchBody, params: [filteredParams] };
-      console.log('fetchOptions() from', fetchOptions(filteredBody));
-      fetchDaiTransfers(fetchOptions(filteredBody));
+      const options = fetchOptions(filteredBody);
+      getDaiTransfers(options);
+    } else {
+      getDaiTransfers();
     }
   }, [filterTo, filterFrom]);
 
-  const fetchDaiTransfers = async (options = fetchOptions()): Promise<DaiTransfers> => {
+  const getDaiTransfers = async (options = fetchOptions()) => {
+    const res = await fetchDaiTransfers(options);
+    if (res) {
+      const mappedResult = mapDaiData(res.result.transfers);
+      setDaiTransfers(mappedResult);
+    }
+  };
+
+  const fetchDaiTransfers = async (options: any): Promise<DaiTransfers> => {
     const res = await fetch(`${RequestUrl.BaseUrlAlchemy}/demo`, options).catch((e: Error) => setError(e.message));
     let data = null;
     if (res) {
@@ -117,13 +117,8 @@ const Web3Provider: FC<IWeb3Provider> = props => {
   };
 
   const filterBy = ({ senderAddress = '', receiverAddress = '' } = {}) => {
-    if (senderAddress) {
-      setFilterFrom(senderAddress);
-    }
-
-    if (receiverAddress) {
-      setFilterTo(receiverAddress);
-    }
+    setFilterFrom(senderAddress);
+    setFilterTo(receiverAddress);
   };
 
   return (

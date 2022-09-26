@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import TxList from '../components/txList/txList';
 import { useWeb3 } from '../contexts/web3.context';
 
@@ -8,29 +8,21 @@ const Dashboard = () => {
   const [from, setFrom] = useState('');
 
   useEffect(() => {
-    if (to) {
-      filterBy({ receiverAddress: to });
-    }
-    if (from) {
-      filterBy({ senderAddress: from });
-    }
-    if (to && from) {
-      filterBy({ senderAddress: from, receiverAddress: to });
-    }
-  }, [to, from]);
+    filterBy({ senderAddress: from, receiverAddress: to });
+  }, [to, from, filterBy]);
 
-  const senderFilterHandler = (e: any) => {
+  const senderFilterHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setFrom(e.target.value);
   };
 
-  const receiverFilterHandler = (e: any) => {
+  const receiverFilterHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTo(e.target.value);
   };
 
   return (
     <>
-      <input type="text" placeholder="Sender" onInput={senderFilterHandler} />
-      <input type="text" placeholder="Receiver" onInput={receiverFilterHandler} />
+      <input type="text" placeholder="Sender" onChange={senderFilterHandler} />
+      <input type="text" placeholder="Receiver" onChange={receiverFilterHandler} />
       <TxList txs={daiTransfers} />
     </>
   );
