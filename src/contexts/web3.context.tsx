@@ -94,8 +94,14 @@ const Web3Provider: FC<IWeb3Provider> = props => {
       const filteredBody = { ...fetchBody, params: [filteredParams] };
       const options = fetchOptions(filteredBody);
       getDaiTransfers(options);
+      web3?.ws.on('block', () => {
+        getDaiTransfers(options);
+      });
     } else {
       getDaiTransfers();
+      web3?.ws.on('block', () => {
+        getDaiTransfers();
+      });
     }
   }, [filterTo, filterFrom]);
 
