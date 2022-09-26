@@ -10,9 +10,9 @@ interface Props {
 const TxList: FC<Props> = ({ txs }) => {
   return (
     <ul className="txList">
-      {txs.map((tx: MappedDaiTransfer) => {
+      {txs.map((tx: MappedDaiTransfer, index: number) => {
         return (
-          <li className="txList__item">
+          <li key={index} className="txList__item">
             <TxItem tx={tx} />
           </li>
         );

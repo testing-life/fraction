@@ -26,11 +26,11 @@ const TxItem: FC<Props> = ({ tx }) => {
         <span>To:</span>
         {truncateAddress(tx.to)}
       </span>
-      <span className="md:flex gap-3 flex-1">
+      <span className="tx">
         <span>Value:</span>
         {tx.value}
       </span>
-      <span className="md:flex gap-3 flex-1">
+      <span className="tx">
         <span>When: </span>
         {new Date(tx.blockTimestamp).toLocaleDateString('en-GB')}
       </span>
