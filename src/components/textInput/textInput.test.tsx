@@ -1,7 +1,6 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TextInput from './textInput';
-// import userEvent from '@testing-library/user-event';
 
 describe('TextInput', () => {
   it('renders', () => {
@@ -16,12 +15,12 @@ describe('TextInput', () => {
     expect(inputField).toHaveAttribute('placeholder', "I'm a holder");
   });
 
-  it('has a change event handler', async () => {
-    // const user = userEvent.setup();
-    // const changeHandlerMock = jest.fn();
-    // render(<TextInput label="I'm a label" placeholder="I'm a holder" id="input-id" onChange={changeHandlerMock} />);
-    // const inputField = screen.getByRole('textbox');
-    // await user.type(inputField, 'Test');
-    // expect(changeHandlerMock).toHaveBeenCalled();
+  it('calls a change event handler', async () => {
+    const user = userEvent;
+    const changeHandlerMock = jest.fn();
+    render(<TextInput label="I'm a label" placeholder="I'm a holder" id="input-id" onChange={changeHandlerMock} />);
+    const inputField = screen.getByRole('textbox');
+    await user.type(inputField, 'Test');
+    expect(changeHandlerMock).toHaveBeenCalled();
   });
 });
