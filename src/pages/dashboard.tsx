@@ -28,7 +28,7 @@ const Dashboard = () => {
         <TextInput id="receiver-filter" label="Filter by" placeholder="Receiver" onChange={receiverFilterHandler} />
       </div>
       {error ? <p className="error">{error}</p> : null}
-      <TxList txs={daiTransfers} />
+      {daiTransfers && <TxList txs={daiTransfers} />}
     </>
   );
 };
